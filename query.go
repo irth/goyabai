@@ -37,25 +37,10 @@ func (y *Yabai) Displays() ([]Display, error) {
 	return displays, err
 }
 
-type Space struct {
-	ID                 int    `json:"id"`
-	UUID               string `json:"uuid"`
-	Index              int    `json:"index"`
-	Label              string `json:"label"`
-	Type               string `json:"type"` // TODO: enum
-	Display            int    `json:"display"`
-	Windows            []int  `json:"windows"`
-	FirstWindow        int    `json:"first-window"`
-	LastWindow         int    `json:"last-window"`
-	HasFocus           bool   `json:"has-focus"`
-	IsVisible          bool   `json:"is-visible"`
-	IsNativeFullscreen bool   `json:"is-native-fullscreen"`
-}
-
-func (y *Yabai) Spaces() ([]Space, error) {
-	var spaces []Space
-	err := y.query(&spaces, "spaces")
-	return spaces, err
+func (y *Yabai) Display(id int) (Display, error) {
+	var display Display
+	err := y.query(&display, "displays", "--display", fmt.Sprint(id))
+	return display, err
 }
 
 type Window struct {
@@ -94,4 +79,10 @@ func (y *Yabai) Windows() ([]Window, error) {
 	var windows []Window
 	err := y.query(&windows, "windows")
 	return windows, err
+}
+
+func (y *Yabai) Window(id int) (Window, error) {
+	var window Window
+	err := y.query(&window, "windows", "--window", fmt.Sprint(id))
+	return window, err
 }
